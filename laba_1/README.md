@@ -17,8 +17,8 @@ $\frac{3}{2} \frac{f(x+h) - f(x-h)}{2h} - \frac{3}{5} \frac{f(x+2h) - f(x-2h)}{4
 ## Results
 
 Here you can found errors for each function for each computational error method 
-![](graphs/graph0.jpg)
-![](graphs/graph1.jpg)
-![](graphs/graph2.jpg)
-![](graphs/graph3.jpg)
-![](graphs/graph4.jpg)
+![](results/0_derivative.png)
+![](results/1_derivative.png)
+![](results/2_derivative.png)
+![](results/3_derivative.png)
+![](results/4_derivative.png)

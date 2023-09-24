@@ -8,9 +8,9 @@ result_path = "results/"
 
 if not os.path.exists(result_path):
     os.mkdir(result_path)
-    print("Result dir created successfuly!\n")
+    print("Result dir created successfuly!")
 else:
-    print("Result path dir already exist\n")
+    print("Result path dir already exist!")
 
 #initial functions
 def f_1(x):
@@ -130,12 +130,6 @@ def fifth_derivative(x, i):
 
         delta = abs(numeric_derivativ - analyt_derivative)
 
-        if (delta == 0):
-            print ("calc value:", numeric_derivativ)
-            print ("analyt_value:", analyt_derivative)
-            print ("function index:", i)
-            print ("strange value on n =", n)
-
         deltas.append(delta)
 
     return deltas
@@ -159,10 +153,6 @@ for i in range(0, 5):
 
 
 def store_plots(func_num,  title):
-    # if func_num == 3 or func_num == 4:
-    #     print (deltas_[func_num])
-    #     print ("\n\n")
-
     x_values = []
     for i in range(1, 22):
         x_values.append(1 / pow(2, i - 1))
