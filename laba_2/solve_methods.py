@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import numpy.linalg as linal
 import sys
+import time
 
 max_float_precision = 0.00001
 
@@ -84,19 +85,18 @@ def LU_method(A, f):
 
             solution[i] = (y[i] - sum) / U[i][i]
 
-        print (solution)
     return solution
 
 
 def Gaus_method(A, f):
     # prepare solution vector
     A_shape = A.shape
+    A_check = A # store matrix to check solution then
     n = A_shape[0]
     solution = np.zeros(n)
 
     # applying gauss elimination
     for j in range(0, n):
-
         # go for elements to be eliminated  
         for i in range(j + 1, n):
             ratio = A[i][j]/A[j][j]
@@ -104,6 +104,7 @@ def Gaus_method(A, f):
             # substruct line
             for k in range(0, n):
                 A[i][k] = A[i][k] - ratio * A[j][k]
+
             # correct right part vector
             f[i] = f[i] - ratio * f[j]
 
@@ -115,13 +116,100 @@ def Gaus_method(A, f):
 
         solution[i] = (f[i] - sum) / A[i][i]
     
-    print(solution)
-    
     return solution
 
 
-A = np.array([[1, 2], [1, 1]])
-f = np.array([12, 17])
 
-Gaus_method(A, f)
-LU_method(A, f)
+# x_0 - vector of starting point
+# epsilon - final precision
+def Yakobi_method(A, f, x_0, epsilon = 0.00001):
+    n = A.shape[0]
+
+    x_prev = x_0
+    x_next = np.zeros(n)
+    error_list = []
+
+    while True:
+        for i in range (0, n):
+
+            sum = 0
+            for j in range (0, n):
+                if (i != j):
+                    sum += A[i][j] * x_prev[j]
+            
+            x_next[i] = (f[i] - sum) / A[i][i]
+        
+        diff = f - np.matmul(A, x_next)
+        norm = linal.norm(diff, 2)
+
+        error_list.append(norm)
+
+        if (norm < epsilon):
+            break
+        
+        x_prev = x_next
+
+    return x_next, error_list
+
+def Zendel_method(A, f, x_0, epsilon = 0.00001):
+    n = A.shape[0]
+
+    x_prev = x_0
+    x_next = np.zeros(n)
+    error_list = []
+
+    while True:
+        for i in range (0, n):
+
+            sum = 0
+            for j in range (0, i):
+                sum += A[i][j]*x_next[j]
+
+            for j in range (i + 1, n):
+                sum += A[i][j]*x_prev[j]
+            
+            x_next[i] = (f[i] - sum) / A[i][i]
+        
+        diff = f - np.matmul(A, x_next)
+        norm = linal.norm(diff, 2)
+
+        error_list.append(norm)
+
+        if (norm < epsilon):
+            break
+        
+        x_prev = x_next
+
+    return x_next, error_list
+
+def check_break(R, epsilon):
+    R_dim = len(R)
+
+    for i in range (0, R_dim):
+        if (np.abs(R[i]) > epsilon):
+            return False
+
+    return True
+
+def relax_method(A, f, x_0, omega, epsilon = 0.00001):
+    solution = x_0
+    n = A.shape[0]
+    
+    residual = linal.norm(np.matmul(A, x_0) - f, 2)
+    
+    errors_list = []
+    
+    while residual > epsilon:
+        errors_list.append(residual)
+
+        for i in range(0, n):
+            sum = 0
+            for j in range(0, n):
+                if j != i:
+                    sum += A[i, j] * solution[j]
+
+            solution[i] = (1 - omega) * solution[i] + (omega / A[i, i]) * (f[i] - sum)
+
+        residual = linal.norm(np.matmul(A, solution) - f, 2)
+
+    return solution, errors_list

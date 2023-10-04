@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import numpy.linalg as linal
 import scanf as sc
+from solve_methods import Gaus_method, LU_method, Yakobi_method, Zendel_method, relax_method
+import io_handlers as io
 
 
 #here and everywhere next:
@@ -22,29 +24,6 @@ def round_input(A, f, precision):
     f = np.round(f, precision)
 
     return A, f
-
-def valid_input(A, f):
-    A_lines = len(A)
-    A_columns   = len(A[0])
-
-    for i in range (0, A_lines):
-        if (len(A[i]) != A_columns):
-            return False # A is not a matrix at all
-        
-    f_lines   = len(f)
-    f_columns = np.array(f[0]).size
-
-    if (A_columns != A_lines): # A is not square matrix
-        return False
-
-    if (f_columns != 1): # f is not a vector
-        return False
-    
-    if (f_lines != A_lines): # f and A sizes are not coordinated 
-        return False
-    
-    return True
-
 
 
 def estimate_precision(A, f, precision):
@@ -84,8 +63,8 @@ def my_func(A, f):
     return 0
 
 
-def calculate_linear (A, f, mode, method, input_precision = default_precision):
-    if (not valid_input(A, f)):
+def calculate_linear_straight(A, f, mode, method, input_precision = default_precision):
+    if (not io.valid_input(A, f)):
         return False
     
     sol_prec = 0
@@ -122,7 +101,41 @@ def calculate_linear (A, f, mode, method, input_precision = default_precision):
     return method(A, f)
 
 
-A = np.array([[100, 99], [99, 98]])
-f = np.array([198.99, 197.01])
 
-calculate_linear(A, f, MODE.APPROX, my_func, 0)
+
+print ("Straight methods calculation:")
+
+Gaus_A = io.create_matrix()
+Gaus_f = io.create_f()
+gaus_solution = calculate_linear_straight(Gaus_A, Gaus_f, MODE.PRECISE, Gaus_method)
+print ("Gaus method error:", linal.norm(Gaus_A @ gaus_solution - Gaus_f, 2))
+
+lu_A = io.create_matrix()
+lu_f = io.create_f()
+lu_solution = calculate_linear_straight(lu_A, lu_f, MODE.PRECISE, LU_method)
+print ("LU method error:", linal.norm(lu_A @ lu_solution - lu_f, 2), "\n")
+
+print("Itarative methods calculation:")
+epsilon = 10e-8 #desirable precision
+print("Desirable solution precision:", epsilon)
+
+Yakobi_A = io.create_matrix()
+Yakobi_f = io.create_f()
+x_0 = np.zeros((Yakobi_A.shape[0]), np.float64) #starting vector
+yakobi_solution, err_list_1 = Yakobi_method(io.create_matrix(), io.create_f(), x_0, epsilon)
+print("Yakobi_method, Steps:", len(err_list_1))
+io.build_plot(err_list_1, "Yakobi_method")
+
+Zendel_A = io.create_matrix()
+Zendel_f = io.create_f()
+x_0 = np.zeros((Yakobi_A.shape[0]), np.float64) #starting vector
+zendel_solution, err_list_2 = Zendel_method(Zendel_A, Zendel_f, x_0, epsilon)
+print("Zendel_method, Steps:", len(err_list_2))
+io.build_plot(err_list_2, "Zendel_method")
+
+Relax_A = io.create_matrix()
+Relax_f = io.create_f()
+x_0 = np.zeros((Yakobi_A.shape[0]), np.float64) #starting vector
+relax_solution, err_list_3 = relax_method(Relax_A, Relax_f, x_0, 0.5, epsilon)
+print("Relaxation method, Steps:", len(err_list_3))
+io.build_plot(err_list_3, "Relax_method")
