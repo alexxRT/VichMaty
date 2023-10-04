@@ -149,6 +149,8 @@ def Yakobi_method(A, f, x_0, epsilon = 0.00001):
         
         x_prev = x_next
 
+    print("Yakobi method error:", error_list[len(error_list) - 1])
+
     return x_next, error_list
 
 def Zendel_method(A, f, x_0, epsilon = 0.00001):
@@ -179,6 +181,8 @@ def Zendel_method(A, f, x_0, epsilon = 0.00001):
             break
         
         x_prev = x_next
+
+    print("Zendel method error:", error_list[len(error_list) - 1])
 
     return x_next, error_list
 
@@ -211,5 +215,7 @@ def relax_method(A, f, x_0, omega, epsilon = 0.00001):
             solution[i] = (1 - omega) * solution[i] + (omega / A[i, i]) * (f[i] - sum)
 
         residual = linal.norm(np.matmul(A, solution) - f, 2)
+
+    print("Relax method error:", linal.norm(residual))
 
     return solution, errors_list

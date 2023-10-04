@@ -116,26 +116,26 @@ lu_solution = calculate_linear_straight(lu_A, lu_f, MODE.PRECISE, LU_method)
 print ("LU method error:", linal.norm(lu_A @ lu_solution - lu_f, 2), "\n")
 
 print("Itarative methods calculation:")
-epsilon = 10e-8 #desirable precision
-print("Desirable solution precision:", epsilon)
+epsilon = 1e-8 #desirable precision
+print("Desirable solution precision:", epsilon, "\n")
 
 Yakobi_A = io.create_matrix()
 Yakobi_f = io.create_f()
 x_0 = np.zeros((Yakobi_A.shape[0]), np.float64) #starting vector
 yakobi_solution, err_list_1 = Yakobi_method(io.create_matrix(), io.create_f(), x_0, epsilon)
-print("Yakobi_method, Steps:", len(err_list_1))
+print("Yakobi_method, Steps:", len(err_list_1), "\n")
 io.build_plot(err_list_1, "Yakobi_method")
 
 Zendel_A = io.create_matrix()
 Zendel_f = io.create_f()
 x_0 = np.zeros((Yakobi_A.shape[0]), np.float64) #starting vector
 zendel_solution, err_list_2 = Zendel_method(Zendel_A, Zendel_f, x_0, epsilon)
-print("Zendel_method, Steps:", len(err_list_2))
+print("Zendel_method, Steps:", len(err_list_2), "\n")
 io.build_plot(err_list_2, "Zendel_method")
 
 Relax_A = io.create_matrix()
 Relax_f = io.create_f()
 x_0 = np.zeros((Yakobi_A.shape[0]), np.float64) #starting vector
 relax_solution, err_list_3 = relax_method(Relax_A, Relax_f, x_0, 0.5, epsilon)
-print("Relaxation method, Steps:", len(err_list_3))
+print("Relaxation method, Steps:", len(err_list_3), "\n")
 io.build_plot(err_list_3, "Relax_method")
