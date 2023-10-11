@@ -105,37 +105,30 @@ def calculate_linear_straight(A, f, mode, method, input_precision = default_prec
 
 print ("Straight methods calculation:")
 
-Gaus_A = io.create_matrix()
-Gaus_f = io.create_f()
-gaus_solution = calculate_linear_straight(Gaus_A, Gaus_f, MODE.PRECISE, Gaus_method)
-print ("Gaus method error:", linal.norm(Gaus_A @ gaus_solution - Gaus_f, 2))
+A = io.create_matrix()
+f = io.create_f()
 
-lu_A = io.create_matrix()
-lu_f = io.create_f()
-lu_solution = calculate_linear_straight(lu_A, lu_f, MODE.PRECISE, LU_method)
-print ("LU method error:", linal.norm(lu_A @ lu_solution - lu_f, 2), "\n")
+gaus_solution = calculate_linear_straight(A.copy(), f.copy(), MODE.PRECISE, Gaus_method)
+print ("Gaus method error:", linal.norm(A @ gaus_solution - f, 2))
+
+lu_solution = calculate_linear_straight(A.copy(), f.copy(), MODE.PRECISE, LU_method)
+print ("LU method error:", linal.norm(A @ lu_solution - f, 2), "\n")
 
 print("Itarative methods calculation:")
 epsilon = 1e-8 #desirable precision
+x_0 = np.zeros((A.shape[0]), np.float64) #starting vector
 print("Desirable solution precision:", epsilon, "\n")
 
-Yakobi_A = io.create_matrix()
-Yakobi_f = io.create_f()
-x_0 = np.zeros((Yakobi_A.shape[0]), np.float64) #starting vector
-yakobi_solution, err_list_1 = Yakobi_method(io.create_matrix(), io.create_f(), x_0, epsilon)
+yakobi_solution, err_list_1 = Yakobi_method(A.copy(), f.copy(), x_0.copy(), epsilon)
 print("Yakobi_method, Steps:", len(err_list_1), "\n")
 io.build_plot(err_list_1, "Yakobi_method")
 
-Zendel_A = io.create_matrix()
-Zendel_f = io.create_f()
-x_0 = np.zeros((Yakobi_A.shape[0]), np.float64) #starting vector
-zendel_solution, err_list_2 = Zendel_method(Zendel_A, Zendel_f, x_0, epsilon)
+
+zendel_solution, err_list_2 = Zendel_method(A.copy(), f.copy(), x_0.copy(), epsilon)
 print("Zendel_method, Steps:", len(err_list_2), "\n")
 io.build_plot(err_list_2, "Zendel_method")
 
-Relax_A = io.create_matrix()
-Relax_f = io.create_f()
-x_0 = np.zeros((Yakobi_A.shape[0]), np.float64) #starting vector
-relax_solution, err_list_3 = relax_method(Relax_A, Relax_f, x_0, 0.5, epsilon)
+
+relax_solution, err_list_3 = relax_method(A.copy(), f.copy(), x_0.copy(), 0.5, epsilon)
 print("Relaxation method, Steps:", len(err_list_3), "\n")
 io.build_plot(err_list_3, "Relax_method")
