@@ -1,14 +1,14 @@
 # 3 lab
 ## Theory
-In this lab we practiced fixed point iteration and Newton iteraton methods for solving a non-linear equation and system of its:
+In this lab we practiced MPI and Newton iteraton methods for solving a non-linear equation and system.
 
 ### Non-linear equation:
 
 $$ F(x) = 2lg(x) - x/2 + 1 $$
+
 ![](results/equation_plot.png)
 
 ### MPI:
-
 
 1) I localized all solutions using theorem of intermidiate value, using LocalizeZeros(). Example of my function output:
 
