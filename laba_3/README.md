@@ -17,8 +17,8 @@ $$ F(x) = 2lg(x) - x/2 + 1 $$
 2) Then I determine iteration that converges ($f'(x) < 1$ on all points of the given interval): 
 For my equation I have two iterations:
 
-$$ x_{k+1} = \abs{4*lg(x_{k}) + 2}$$
-$$ x_{k+1} = 10ˆ(\frac{x}{4} - \frac{1}{2})$$
+$$ x_{k+1} = \abs{4*lg(x_{k}) + 2} $$
+$$ x_{k+1} = 10ˆ(\frac{x}{4} - \frac{1}{2}) $$
 
 In code, they are chosen autamaticly, using FindCompressiveIteration(), for each interval.
 
@@ -39,10 +39,10 @@ It checks few properties of F(x) on the given interval:
 - F''(x) - does not change its sign
 
 $$ F(x) = 0 $$
-$$ x_{k+1} = x_{k} - \frac{F(x_k)}{F'(x_k)}$$
+$$ x_{k+1} = x_{k} - \frac{F(x_k)}{F'(x_k)} $$
 
-$$x_{1} = 0.39754$$
-$$x_{2} = 4.68156$$
+$$ x_{1} = 0.39754 $$
+$$ x_{2} = 4.68156 $$
 
 
 ![](results/error_simple/Nuton_1.png)
