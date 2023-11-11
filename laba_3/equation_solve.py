@@ -31,7 +31,7 @@ def PlotEquation(deltas_left, deltas_right, roots):
     st = []
 
     for i in range (0, len(roots)):
-        st.append("x_" + str(i) + " = " + str(round(roots[i], prec_num)))
+        st.append("x_" + str(i + 1) + " = " + str(round(roots[i], prec_num)))
 
     plt.legend(st)
 
@@ -59,6 +59,14 @@ def PlotErrors(res, file_name, title):
     plt.show()
     plt.clf()
     plt.close()
+
+def PrintResults(roots):
+    print ("Results:")
+
+    for i in range (0, len(roots)):
+        output = "x_" + str(i + 1) + " = " + str(round(roots[i], prec_num))
+        print(output)
+
 
 
 def Equation(x):
@@ -288,9 +296,7 @@ def main():
 
     roots, res = EquationSimpleIteration(delta_left, delta_right, 0.0001, True)
 
-    print ("Results:")
-    print("x_1 =", round(roots[0], prec_num))
-    print("x_2 =", round(roots[1], prec_num))
+    PrintResults(roots)
     PlotErrors(res[0], "method_1", "x = 10ˆ(x/4 - 1/2)")
     PlotErrors(res[1], "method_2", "x = 4lg(x) + 2")
 
@@ -299,9 +305,8 @@ def main():
     print ("\n\n---------------------Solving with Nuton iteration method---------------------\n")
 
     roots, res = EquationNutonIteration(delta_left, delta_right, 0.0001, True)
-    print ("Results:")
-    print("x_1 =", round(roots[0], prec_num))
-    print("x_2 =", round(roots[1], prec_num))
+    
+    PrintResults(roots)
     PlotErrors(res[0], "Nuton_1", "x = 0.39")
     PlotErrors(res[1], "Nuton_2", "x = 4.68")
 
