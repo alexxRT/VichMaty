@@ -28,9 +28,12 @@ def PlotEquation(deltas_left, deltas_right, roots):
     plt.xlabel("x axis")
     plt.ylabel("y axis")
 
-    str_1 = "x_1 = " + str(round(roots[0], prec_num))
-    str_2 = "x_2 = " + str(round(roots[1], prec_num))
-    plt.legend([str_1, str_2])
+    st = []
+
+    for i in range (0, len(roots)):
+        st.append("x_" + str(i) + " = " + str(round(roots[i], prec_num)))
+
+    plt.legend(st)
 
     y_zeros = np.zeros(len(deltas_left))
     plt.errorbar(deltas_left,  y_zeros, yerr = 0.25, fmt = ".k", ecolor="r")
@@ -79,8 +82,15 @@ def FindCompressiveIteration(x_left, x_right):
 
     for i in range (0, len(iterations)):
         iter_deriv = grad(iterations[i])
+
         iter_id = i
         x = x_left
+
+        try: 
+            iter_deriv(x_left)
+        except(TypeError):
+            # function iteration = const
+            return 0.0
 
         while(x < x_right):
             if (np.abs(iter_deriv(x)) > 1):
@@ -270,7 +280,7 @@ def main():
     LocalizeZeros(0.1, 10, delta_left, delta_right)
 
     #Its possible for intervals to have mutural point
-    #This function makes one interval from two with mutural point 
+    #This function makes one interval from two with mutural point
     ShrinkDeltas(delta_left, delta_right)
 
 
