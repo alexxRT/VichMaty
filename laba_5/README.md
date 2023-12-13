@@ -27,6 +27,9 @@ For function given pointwise below:
 | $f_x$    | 1.000000 | 0.989616 | 0.958851 | 0.908852 | 0.841471 | 0.759188 | 0.664997 | 0.562278 | 0.454649 |
 
 I value trapezoid method =  1.603143993230099
+
 I value trapezoid method =  1.5963215382293798 with doubled h
+
 I value Simpson method = 1.6054181448970055
+
 I trapezoid method with Richardson extrapolation = 1.6054181448970055
